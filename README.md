@@ -10,11 +10,12 @@ Sitio estático bilingüe (español e inglés) sobre desarrollo de software y so
 | --- | --- |
 | `index.html`, `en/index.html` | Páginas en español e inglés (generadas, no se editan a mano) |
 | `tools/build.py` | Contenido y plantillas; genera los HTML, `sitemap.xml` y `robots.txt` |
-| `assets/css/styles.css` | Estilos: tokens de color, tipografía y espaciado al inicio |
-| `assets/js/main.js` | Solo el botón «Copiar correo» |
-| `assets/fonts/` | Schibsted Grotesk y JetBrains Mono (SIL OFL), servidas localmente |
+| `assets/css/styles.css` | Estilos: tokens de color, tipografía y espaciado al inicio (ver `DESIGN.md`) |
+| `assets/js/main.js` | Botón «Copiar correo», animaciones y aparición de secciones |
+| `assets/js/anime.min.js` | [anime.js](https://animejs.com) 3.2.2 (MIT), servido localmente |
+| `assets/fonts/` | Schibsted Grotesk, Inter y JetBrains Mono (SIL OFL), servidas localmente |
 | `assets/Pasquel_Johann_CV.pdf` | CV descargable |
-| `assets/img/` | Retrato, favicon e imagen para redes (`og.png`) |
+| `assets/img/` | Favicon, imagen para redes (`og.png`) y retrato (`profile.jpg`, sin uso en la página actual) |
 
 ## Actualizar el contenido
 
