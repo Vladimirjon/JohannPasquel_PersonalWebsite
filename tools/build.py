@@ -8,6 +8,7 @@ sitio, edita el contenido aquí, ejecuta el script y publica los HTML generados.
 """
 from html import escape
 from pathlib import Path
+import hashlib
 import json
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -22,6 +23,12 @@ GITHUB = f"https://github.com/{GITHUB_USER}"
 LANG = "es"
 
 
+def asset(path):
+    """Ruta del recurso con huella de contenido, para que el navegador no use una copia vieja."""
+    digest = hashlib.sha256((ROOT / path).read_bytes()).hexdigest()[:8]
+    return f"{path}?v={digest}"
+
+
 def tr(es, en):
     return es if LANG == "es" else en
 
@@ -31,14 +38,14 @@ def e(text):
 
 
 ICON = {
-    "arrow": '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    "down": '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v8m0 0L4.5 7.5M8 11l3.5-3.5M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    "copy": '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 5.5h7v8h-7zM3.5 10.5v-8h7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "arrow": '<svg class="icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "down": '<svg class="icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v8m0 0L4.5 7.5M8 11l3.5-3.5M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "copy": '<svg class="icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 5.5h7v8h-7zM3.5 10.5v-8h7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 }
 
 
 def _glyph(body):
-    return f'<svg class="glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">{body}</svg>'
+    return f'<svg class="glyph" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">{body}</svg>'
 
 
 GLYPH = {
@@ -62,7 +69,7 @@ GLYPH = {
     "repo": _glyph('<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/>'),
 }
 
-FLAG = '<svg class="flag" viewBox="0 0 24 16" aria-hidden="true" focusable="false"><rect width="24" height="8" fill="#ffdd00"/><rect y="8" width="24" height="4" fill="#034ea2"/><rect y="12" width="24" height="4" fill="#ed1c24"/></svg>'
+FLAG = '<svg class="flag" width="22" height="15" viewBox="0 0 24 16" aria-hidden="true" focusable="false"><rect width="24" height="8" fill="#ffdd00"/><rect y="8" width="24" height="4" fill="#034ea2"/><rect y="12" width="24" height="4" fill="#ed1c24"/></svg>'
 
 
 def icon_box(name):
@@ -255,7 +262,7 @@ def chips(items, cls="chips"):
     return f'<ul class="{cls}">' + "".join(f"<li>{e(i)}</li>" for i in items) + "</ul>"
 
 
-RINGS = '<svg class="rings{extra}" viewBox="0 0 1000 1000" aria-hidden="true" focusable="false"><circle cx="500" cy="500" r="80"/><circle cx="500" cy="500" r="170"/><circle cx="500" cy="500" r="260"/><circle cx="500" cy="500" r="350"/><circle cx="500" cy="500" r="440"/></svg>'
+RINGS = '<svg class="rings{extra}" viewBox="0 0 1000 1000" fill="none" stroke="#3ba6f1" aria-hidden="true" focusable="false"><circle cx="500" cy="500" r="80"/><circle cx="500" cy="500" r="170"/><circle cx="500" cy="500" r="260"/><circle cx="500" cy="500" r="350"/><circle cx="500" cy="500" r="440"/></svg>'
 
 
 # ---------------------------------------------------------------- plantillas
@@ -585,7 +592,7 @@ def render_page(lang):
   <link rel="icon" href="{base}assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="{base}assets/fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{base}assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="{base}assets/css/styles.css">
+  <link rel="stylesheet" href="{base}{asset("assets/css/styles.css")}">
   <script>document.documentElement.classList.add('js')</script>
   <script type="application/ld+json">{json.dumps(person, ensure_ascii=False)}</script>
 </head>
@@ -613,8 +620,8 @@ def render_page(lang):
       <a href="#top">{tr("Volver arriba", "Back to top")}</a>
     </div>
   </footer>
-  <script src="{base}assets/js/anime.min.js" defer></script>
-  <script src="{base}assets/js/main.js" defer></script>
+  <script src="{base}{asset("assets/js/anime.min.js")}" defer></script>
+  <script src="{base}{asset("assets/js/main.js")}" defer></script>
 </body>
 </html>
 """

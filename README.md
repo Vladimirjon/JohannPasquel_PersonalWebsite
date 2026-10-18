@@ -22,7 +22,8 @@ Sitio estático bilingüe (español e inglés) sobre desarrollo de software y so
 1. Edita los textos en `tools/build.py` (cada texto está junto a su traducción con `tr(es, en)`).
 2. Ejecuta `python3 tools/build.py`.
 3. Para previsualizar: `python3 -m http.server` y abre http://localhost:8000.
-4. Haz commit de los HTML generados; GitHub Pages publica desde la rama principal.
+4. Si cambias CSS o JS, vuelve a ejecutar el script: añade una huella (`?v=…`) a los recursos para que el navegador no use una copia vieja.
+5. Haz commit de los HTML generados; GitHub Pages publica desde la rama principal.
 
 Para actualizar el CV, reemplaza `assets/Pasquel_Johann_CV.pdf` conservando el nombre.
 
