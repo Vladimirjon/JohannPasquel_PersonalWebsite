@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://vladimirjon.github.io/JohannPasquel_PersonalWebsite/sitemap.xml
